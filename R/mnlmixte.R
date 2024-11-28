@@ -74,7 +74,7 @@ MNLMIXTE <- R6::R6Class(
 #' library(mnlmixte)
 #' Initialize the model
 #' model <- MNLMIXTE$new(learning_rate = 0.01, epochs = 1000, use_parallel = FALSE)
-    initialize = function(learning_rate = 0.01, epochs = 1000, regularization = 0.01, epsilon = 1e-8, loss_function = "logloss", use_parallel = FALSE) {
+    initialize = function(learning_rate = 0.01, epochs = 1000, regularization = 0.01, epsilon = 1e-8, loss_function = "logloss") {
       self$dependencies()  # Vérifiez et installez les dépendances si nécessaire
       self$learning_rate <- learning_rate
       self$epochs <- epochs
@@ -83,7 +83,6 @@ MNLMIXTE <- R6::R6Class(
       self$coefficients <- NULL
       self$loss_history <- c()
       self$loss_function <- loss_function
-      self$use_parallel <- use_parallel
     },
 
 #' Train the Model
