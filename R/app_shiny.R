@@ -51,14 +51,14 @@ ui <- dashboardPage(
             p("Utilisez le menu à gauche pour naviguer entre les différentes étapes."),
             h4("Ressources utiles"),
             tags$ul(
-              tags$li(a("Documentation de l'application", href = "https://example.com", target = "_blank")),
-              tags$li(a("Introduction à la régression logistique multinomiale", href = "https://example.com", target = "_blank"))
+              tags$li(a("Documentation de l'application", href = "https://example.com", target = "_blank"))
             )
           ),
           column(
             width = 6,
-            h3("Flux de l'application"),
-            img(src = "workflow_image.png", height = "300px", alt = "Diagramme du flux")
+            h3("Flux de l'application : "),
+            img(src = "workflow_image.png", height = "800px", alt = "Diagramme du flux",
+                style = "display: block; margin-left: auto; margin-right: auto;")  # Centrage horizontal
           )
         )
       ),
@@ -105,20 +105,30 @@ ui <- dashboardPage(
                 # Colonne de gauche : Gestion des valeurs manquantes - Variables quantitatives et qualitatives
                 column(width=4,
                        h3("3 - Gestion des valeurs manquantes"),
-                       h4("Gestion des variables quantitatives"),
+                       h4("Gestion des variables actives quantitatives"),
                        radioButtons("missing_quant_method", "Méthode :",
                                     choices = c("Supprimer les lignes" = "remove_rows",
                                                 "Supprimer les colonnes" = "remove_cols",
                                                 "Remplir par la moyenne" = "fill_mean",
-                                                "Remplir par la médiane" = "fill_median"),
-                                    selected = "fill_mean"),
+                                                "Remplir par la médiane" = "fill_median",
+                                                "Aucune modification" = "none"),
+                                    selected = "none"),
                
-                       h4("Gestion des variables catégorielles"),
+                       h4("Gestion des variables actives catégorielles"),
                        radioButtons("missing_cat_method", "Méthode :",
                                     choices = c("Supprimer les lignes" = "remove_rows",
                                                 "Supprimer les colonnes" = "remove_cols",
-                                                "Remplir par le mode (modalité la plus fréquente)" = "fill_mode"),
-                                    selected = "fill_mode"),
+                                                "Remplir par le mode (modalité la plus fréquente)" = "fill_mode",
+                                                "Aucune modification" = "none"),
+                                    selected = "none"),
+                       
+                       h4("Gestion de la variable cible"),
+                       radioButtons("missing_target_method", "Méthode :",
+                                    choices = c("Supprimer les lignes" = "remove_rows",
+                                                "Remplir par le mode (modalité la plus fréquente)" = "fill_mode",
+                                                "Aucune modification" = "none"),
+                                    selected = "none"),
+                       
                        actionButton("handle_missing", "Appliquer les modifications")
                 ),
                 
@@ -141,7 +151,8 @@ ui <- dashboardPage(
                   numericInput("epochs", "Nombre d'époques", value = 1000, min = 100, step = 100),
                   numericInput("regularization", "Régularisation", value = 0.01, min = 0, step = 0.01),
                   # Bouton entrainement
-                  actionButton("train", "Entraîner le Modèle")
+                  actionButton("train", "Entraîner le Modèle"),
+                  p("Attention à ne pas laisser de valeurs manquantes, sinon l'entraînement ne se débloquera pas.")
                 ),
                 column(
                   width=8,
@@ -302,25 +313,44 @@ server <- function(input, output, session) {
     req(data())
     df <- data()  # Copie des données initiales
     
-    # Traitement des variables quantitatives
+    # Gestion des valeurs manquantes pour les variables quantitatives
+    quantitative_cols <- sapply(df, is.numeric)  # Identifier les colonnes quantitatives
     if (input$missing_quant_method == "remove_rows") {
-      df <- df[complete.cases(df), ]  # Supprimer lignes avec des NA
+      df <- df[complete.cases(df[, quantitative_cols]), ]  # Supprime les lignes avec des valeurs manquantes dans les variables quantitatives
     } else if (input$missing_quant_method == "remove_cols") {
-      df <- df[, colSums(is.na(df)) == 0]  # Supprimer colonnes avec des NA
-    }  else if (input$missing_quant_method == "fill_mean") {
-      df <- df %>% mutate(across(where(is.numeric), ~ ifelse(is.na(.), mean(., na.rm = TRUE), .)))
+      df <- df[, colSums(is.na(df[, quantitative_cols])) == 0]  # Supprime les colonnes quantitatives avec des valeurs manquantes
+    } else if (input$missing_quant_method == "fill_mean") {
+      df[, quantitative_cols] <- lapply(df[, quantitative_cols], function(x) ifelse(is.na(x), mean(x, na.rm = TRUE), x))  # Remplir par la moyenne
     } else if (input$missing_quant_method == "fill_median") {
-      df <- df %>% mutate(across(where(is.numeric), ~ ifelse(is.na(.), median(., na.rm = TRUE), .)))
+      df[, quantitative_cols] <- lapply(df[, quantitative_cols], function(x) ifelse(is.na(x), median(x, na.rm = TRUE), x))  # Remplir par la médiane
     }
     
-    # Traitement des variables catégorielles
-    if (input$missing_cat_method == "fill_mode") {
-      mode <- function(x) {
-        ux <- unique(x[!is.na(x)])
-        ux[which.max(tabulate(match(x, ux)))]
-      }
-      df <- df %>% mutate(across(where(is.factor), ~ ifelse(is.na(.), mode(.), .)))
-    } 
+    # Gestion des valeurs manquantes pour les variables catégorielles
+    categorical_cols <- sapply(df, is.factor) | sapply(df, is.character)  # Identifier les colonnes catégorielles
+    target_name <- input$target
+    categorical_cols[target_name] <- FALSE #Exclusion de la variable cible
+    
+    if (input$missing_cat_method == "remove_rows") {
+      df <- df[complete.cases(df[, categorical_cols]), ]  # Supprime les lignes avec des valeurs manquantes dans les variables catégorielles
+    } else if (input$missing_cat_method == "remove_cols") {
+      df <- df[, colSums(is.na(df[, categorical_cols])) == 0]  # Supprime les colonnes catégorielles avec des valeurs manquantes
+    } else if (input$missing_cat_method == "fill_mode") {
+      df[, categorical_cols] <- lapply(df[, categorical_cols], function(x) {
+        mode_value <- names(sort(table(x), decreasing = TRUE))[1]  # Mode (modalité la plus fréquente)
+        ifelse(is.na(x), mode_value, x)
+      })  
+    }
+    
+    # Gestion des valeurs manquantes pour la variable cible
+    target_name <- input$target
+    target_col <- df[[target_name]] 
+    
+    if (input$missing_target_method == "remove_rows") {
+      df <- df[complete.cases(df[, target_name]), ]  # Supprime les lignes avec des valeurs manquantes dans la variable cible
+    } else if (input$missing_target_method == "fill_mode") {
+      mode_value <- names(sort(table(target_col), decreasing = TRUE))[1]
+      df[[target_name]] <- ifelse(is.na(target_col), mode_value, target_col)  # Remplir la variable cible par le mode
+    }
     
     # Mise à jour des données traitées
     cleaned_data(df)
@@ -333,9 +363,18 @@ server <- function(input, output, session) {
   })
   
   # Observe l'événement de clic sur le bouton "Appliquer les modifications"
-  observeEvent(input$handle_missing, {
-    #Réactiver le bouton "Entrainer le modèle 
-    shinyjs::enable("train")
+  observe({
+    # Récupérer les données nettoyées
+    data <- cleaned_data()
+    
+    # Vérifier s'il reste des valeurs manquantes
+    if (!is.null(data) && any(is.na(data))) {
+      # Désactiver le bouton "train" s'il reste des NA
+      shinyjs::disable("train")
+    } else {
+      # Activer le bouton "train" s'il n'y a plus de NA
+      shinyjs::enable("train")
+    }
   })
   
   # Entrainement du modèle
