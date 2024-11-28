@@ -2,7 +2,7 @@
   
 **Author(s):**  
 - Lansana CISSE (<l.cisse@univ-lyon2.fr>)  
-- Pierre Bourdon (<p.bourdon@univ-lyon2.fr>)  
+- Pierre BOURBON (<p.bourbon@univ-lyon2.fr>)  
 
 ---
 
