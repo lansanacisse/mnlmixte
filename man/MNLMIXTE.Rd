@@ -206,8 +206,7 @@ Sets up the model with the provided hyperparameters and checks for dependencies.
   epochs = 1000,
   regularization = 0.01,
   epsilon = 1e-08,
-  loss_function = "logloss",
-  use_parallel = FALSE
+  loss_function = "logloss"
 )}\if{html}{\out{</div>}}
 }
 
