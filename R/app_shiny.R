@@ -218,12 +218,11 @@ ui <- dashboardPage(
 # Serveur
 server <- function(input, output, session) {
   # Activer shinyjs pour gérer l'état des boutons
-  #useShinyjs()
+  useShinyjs()
   
   # Désactive les boutons
-  disable("handle_missing")
-  disable("train")
-  
+  shinyjs::disable("handle_missing")
+  shinyjs::disable("train")
   
   # Chargement du fichier CSV ou Excel
   data <- reactive({
@@ -268,8 +267,6 @@ server <- function(input, output, session) {
     # Active le bouton de gestion des valeurs manquantes si une variable cible et des variables actives sont choisies
     if (!is.null(input$target) && length(input$active_vars) > 0) {
       shinyjs::enable("handle_missing")  # Réactive le bouton
-    } else {
-      shinyjs::disable("vars_choices")  # Désactive le bouton si les sélections sont invalides
     }
   })
   
@@ -298,7 +295,7 @@ server <- function(input, output, session) {
   
   # Gestion des valeurs manquantes
   
-  #Objet pour stocker les données traitées 
+  # Objet pour stocker les données traitées 
   cleaned_data <- reactiveVal(NULL)
   
   observeEvent(input$handle_missing, {
@@ -350,7 +347,10 @@ server <- function(input, output, session) {
     withProgress(message = "Entraînement en cours...", value = 0, {
       #Entrainement
       req(cleaned_data(), input$target, input$active_vars)
-      X <- cleaned_data()[, input$active_vars]
+      # Filtrer les colonnes qui existent dans cleaned_data()
+      existing_vars <- intersect(input$active_vars, colnames(cleaned_data()))
+      #Séparation variables actives / variable cible
+      X <- cleaned_data()[, existing_vars]
       y <- cleaned_data()[[input$target]]
       values$model <- MNLMIXTE$new(learning_rate = input$learning_rate, epochs = input$epochs, regularization = input$regularization)
       values$model$fit(X, y)
@@ -388,7 +388,7 @@ server <- function(input, output, session) {
   # Affichage graphique de la distribution des probabilités par classe
   output$proba_distribution <- renderPlot({
     req(values$model$predict_proba)
-    probas <- values$model$predict_proba(data())
+    probas <- values$model$predict_proba(cleaned_data())
     probas_df <- as.data.frame(probas)
     colnames(probas_df) <- values$model$classes 
     # Restructurer les données en format long pour ggplot2
@@ -415,7 +415,10 @@ server <- function(input, output, session) {
   #Affichage des metriques
   output$metrics <- renderPrint({
     req(cleaned_data())
-    X <- cleaned_data()[, input$active_vars]
+    # Filtrer les colonnes qui existent dans cleaned_data()
+    existing_vars <- intersect(input$active_vars, colnames(cleaned_data()))
+    # Séparation variables actives / variable cible
+    X <- cleaned_data()[, existing_vars]
     y <- cleaned_data()[[input$target]]
     values$model$evaluate(X, y)
   })
