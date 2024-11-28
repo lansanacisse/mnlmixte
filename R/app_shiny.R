@@ -1,5 +1,6 @@
 library(shiny)
 library(shinydashboard)
+library(shinyjs)
 library(DT)
 library(readxl)
 library(ggplot2)
@@ -27,6 +28,9 @@ ui <- dashboardPage(
   
   # Affichage principal
   dashboardBody(
+    # Activer shinyjs pour gérer l'état des boutons
+    useShinyjs(),  
+    
     # Onglets
     tabItems(
       
@@ -84,6 +88,7 @@ ui <- dashboardPage(
                        h3("2 - Choix des variables"),
                        uiOutput('target'),
                        uiOutput('active_vars'),
+                       # Résumé des données
                        h3("Résumé des données"),
                        verbatimTextOutput('summary')
                 ),
@@ -212,6 +217,13 @@ ui <- dashboardPage(
 
 # Serveur
 server <- function(input, output, session) {
+  # Activer shinyjs pour gérer l'état des boutons
+  #useShinyjs()
+  
+  # Désactive les boutons
+  disable("handle_missing")
+  disable("train")
+  
   
   # Chargement du fichier CSV ou Excel
   data <- reactive({
@@ -247,6 +259,18 @@ server <- function(input, output, session) {
     updateSelectizeInput(session, 'active_vars', 
                          choices = setdiff(columns_names, input$target), 
                          server = TRUE)
+  })
+  
+  # Observe l'événement des sélections de variables
+  observe({
+    req(input$target, input$active_vars)
+    
+    # Active le bouton de gestion des valeurs manquantes si une variable cible et des variables actives sont choisies
+    if (!is.null(input$target) && length(input$active_vars) > 0) {
+      shinyjs::enable("handle_missing")  # Réactive le bouton
+    } else {
+      shinyjs::disable("vars_choices")  # Désactive le bouton si les sélections sont invalides
+    }
   })
   
   # Sélection de la variable cible 
@@ -309,6 +333,12 @@ server <- function(input, output, session) {
   output$cleaned_table <- renderDT({
     req(cleaned_data())
     datatable(cleaned_data(), options = list(scrollX = TRUE))
+  })
+  
+  # Observe l'événement de clic sur le bouton "Appliquer les modifications"
+  observeEvent(input$handle_missing, {
+    #Réactiver le bouton "Entrainer le modèle 
+    shinyjs::enable("train")
   })
   
   # Entrainement du modèle
