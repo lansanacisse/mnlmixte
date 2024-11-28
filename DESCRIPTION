@@ -1,0 +1,31 @@
+Package: mnlmixte
+Title: Multinomial Logistic Regression for Mixed Data
+Version: 0.0.1
+Authors@R: 
+    c(
+        person(given = "Lansana", family = "CISSE", email = "l.cisse@univ-lyon2.fr", role = c("aut", "cre")),
+        person(given = "Pierre", family = "Bourdon", email = "p.bourdon@univ-lyon2.fr", role = "aut")
+    )
+Description: A package for multinomial logistic regression tailored for mixed datasets 
+    (categorical and numerical variables). It supports variable selection, parallel processing 
+    for large-scale datasets, and provides tools for model evaluation, prediction, and data preprocessing. 
+    The package also includes support for exporting models in PMML format and visualization of feature importance.
+License: GPL-3
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Depends: 
+    R (>= 4.0.0)
+Imports:
+    FactoMineR,
+    foreach,
+    doParallel,
+    parallel,
+    pROC,
+    caret
+Suggests:
+    ggplot2,
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+VignetteBuilder: knitr

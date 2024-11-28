@@ -1,0 +1,25 @@
+---
+title: "how-to-use-my-package"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{how-to-use-my-package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(mnlmixte)  # Replace `mnlmixte` with your package name
+```
+
+# DESCRIPTION
+
+The `mnlmixte` package is designed for multinomial logistic regression tailored to mixed datasets. It supports parallel processing, variable selection, and visualizations.
+
+
+## Functionality: Predict Multinomial Logistic Regression Probabilities
+
+The `mnlmixte` package allows you to fit a multinomial logistic regression model and predict probabilities for new data.
+
+
+
