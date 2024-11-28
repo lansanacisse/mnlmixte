@@ -1,10 +1,5 @@
 # mnlmixte - multinomial logistic regression  for mixed
   
-**Author(s):**  
-- Lansana CISSE (<l.cisse@univ-lyon2.fr>)  
-- Pierre BOURBON (<p.bourbon@univ-lyon2.fr>)  
-
----
 
 ## Overview
 
@@ -61,36 +56,37 @@ install.packages(c("FactoMineR", "foreach", "doParallel", "parallel", "pROC", "c
 Here is a simple example of how to use the `mnlmixte` package:
 
 ```R
-# Load the mnlmixte library
-library(mnlmixte)
+library(readr)    # For reading CSV files
+library(caret)    # For data partitioning
+library(mnlmixte) # mnlmixte package
 
-# Create some training data (replace with your own dataset)
-X_train <- data.frame(
-  Var1 = sample(1:100, 100, replace = TRUE),
-  Var2 = sample(c("A", "B", "C"), 100, replace = TRUE)
-)
-y_train <- as.factor(sample(c("Yes", "No"), 100, replace = TRUE))
+# Load the dataset
+score = read.csv("Score.csv", header = TRUE, sep = ",")
 
-# Initialize the model
-model <- MNLMIXTE$new(
-  learning_rate = 0.01,
-  epochs = 500,
-  regularization = 0.01,
-  use_parallel = TRUE
-)
+# Split the data into X (features) and y (target)
+X <- score[, !(colnames(score) %in% "Credit_Score")]  
+y <- as.factor(score$Credit_Score)
+
+# Divide the data into training and testing
+set.seed(123)  # For reproducibility
+train_indices <- createDataPartition(y, p = 0.7, list = FALSE)
+X_train <- X[train_indices, ]
+y_train <- y[train_indices]
+X_test <- X[-train_indices, ]
+y_test <- y[-train_indices]
+
+# create a MNLMIXTE object
+model <- MNLMIXTE$new(learning_rate = 0.01, epochs = 5000, regularization = 0.01)
 
 # Train the model
-model$fit(X_train, y_train)
+model$fit(X_train, y_train, variable_selection = TRUE, use_parallel=TRUE)
 
-# Summarize the model
-model$summary()
+# Predict on the test data
+predictions <- model$predict(X_test)
 
-# Predict on new data
-predictions <- model$predict(X_train)
-print(predictions)
-
-# Plot feature importance
-model$plot_importance()
+# Evaluate the model
+results <- model$evaluate(X_test, y_test)
+print(results, row.names = TRUE)
 ```
 
 ---
@@ -130,17 +126,17 @@ model$plot_importance()
 ### 9. `to_pmml(file_path)`
 - Exports the trained model to a PMML file for deployment.
 
----
+--- 
 
 ## Contributing
 
 We welcome contributions to the `mnlmixte` package! Please follow these steps:
 
-1. Fork the repository.
-2. Create a feature branch: `git checkout -b feature-name`.
-3. Commit your changes: `git commit -m "Add new feature"`.
-4. Push to the branch: `git push origin feature-name`.
-5. Submit a pull request.
+    1. Fork the repository.
+    2. Create a feature branch: `git checkout -b feature-name`.
+    3. Commit your changes: `git commit -m "Add new feature"`.
+    4. Push to the branch: `git push origin feature-name`.
+    5. Submit a pull request.
 
 ---
 
@@ -154,12 +150,5 @@ This package is licensed under the **GPL-3 License**. See the LICENSE file for d
 
 For any issues, please feel free to open an issue on the GitHub repository or contact the authors:
 
-- Lansana CISSE (<l.cisse@univ-lyon2.fr>)
-- Pierre Bourdon (<p.bourdon@univ-lyon2.fr>)
-
----
-
-### Repository Link:
-[GitHub - lansanacisse/mnlmixte](https://github.com/lansanacisse/mnlmixte)
-
----
+- [Lansana CISSE](https://github.com/lansanacisse)
+- [Pierre Bourdon](https://github.com/pbrbn)
