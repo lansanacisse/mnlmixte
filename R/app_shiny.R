@@ -8,227 +8,25 @@ library(dplyr)
 
 #Source 
 source("mnlmixte.R")
+source("modules_app/mod_sidebar_ui.R")
+source("modules_app/mod_acceuil_ui.R")
+source("modules_app/mod_donnes_ui.R")
+source("modules_app/mod_modelisation_ui.R")
+source("modules_app/mod_resultats_ui.R")
 
 # Interface utilisateur
 ui <- dashboardPage(
-  
-  # Titre de l'application
   dashboardHeader(title = "Régression Logistique Multinomiale"),
-  
-  # Barre latérale
-  dashboardSidebar(
-    sidebarMenu(
-      # Menu barre latérale
-      menuItem("Accueil", tabName = "home", icon = icon("home")),
-      menuItem("Données", tabName = "data", icon = icon("database")),
-      menuItem("Modélisation", tabName = "modeling", icon = icon("calculator")),
-      menuItem("Résultats", tabName = "results", icon = icon("chart-bar"))  
-    )
-  ),
-  
-  # Affichage principal
+  dashboardSidebar(mod_sidebar_ui("sidebar")),
   dashboardBody(
-    # Activer shinyjs pour gérer l'état des boutons
-    useShinyjs(),  
-    
-    # Onglets
     tabItems(
-      
-      # Onglet Accueil
-      tabItem(
-        tabName = "home",
-        fluidRow(
-          column(
-            width = 6,
-            h2("Bienvenue dans l'application de Régression Logistique Multinomiale"),
-            p("Ce travail à été réalisé dans le cadre du cours de Programmation R en Master SISE."),
-            p("Cette application vous permet de :"),
-            tags$ul(
-              tags$li("Charger et préparer vos données."),
-              tags$li("Configurer et entraîner un modèle de régression logistique multinomiale."),
-              tags$li("Visualiser les résultats et interpréter les coefficients.")
-            ),
-            p("Utilisez le menu à gauche pour naviguer entre les différentes étapes."),
-            h4("Ressources utiles"),
-            tags$ul(
-              tags$li(a("Documentation de l'application", href = "https://example.com", target = "_blank"))
-            )
-          ),
-          column(
-            width = 6,
-            h3("Flux de l'application : "),
-            img(src = "workflow_image.png", height = "800px", alt = "Diagramme du flux",
-                style = "display: block; margin-left: auto; margin-right: auto;")  # Centrage horizontal
-          )
-        )
-      ),
-      
-      # Onglet chargement des données et choix des variables
-      tabItem(tabName = "data", 
-              # Structure en colonnes
-              fluidRow(
-                # Colonne de gauche : Chargement et sélection des variables
-                column(width = 4,
-                       h3("1 - Chargement des données"),
-                       radioButtons("file_type", "Type de fichier :",
-                                    choices = c("CSV" = "csv", "Excel" = "xlsx"),
-                                    selected = "csv"),
-                       
-                       fileInput('file', "Charger un fichier", accept = c(".csv", ".xlsx")),
-                  
-                       conditionalPanel(
-                         condition = "input.file_type == 'csv'", 
-                         radioButtons("sep", "Séparateur :",
-                                      choices = c("Point-virgule (;)" = ";",
-                                                  "Tabulation (\\t)" = "\t",
-                                                  "Virgule (,)" = ","),
-                                      selected = ";")
-                       ),
-                       # Choix des variables
-                       h3("2 - Choix des variables"),
-                       uiOutput('target'),
-                       uiOutput('active_vars'),
-                       
-                ),
-                
-                # Colonne de droite : Affichage du tableau de données
-                column(width = 8,
-                       h3("Aperçu des données"),
-                       DTOutput('table')
-                )
-              ),
-              
-              fluidRow(
-                # Résumé des données
-                column(width=12,
-                       h3("Résumé des données"),
-                       verbatimTextOutput('summary'))
-              ),
-              
-              fluidRow(
-                # Colonne de gauche : Gestion des valeurs manquantes - Variables quantitatives et qualitatives
-                column(width=4,
-                       h3("3 - Gestion des valeurs manquantes"),
-                       h4("Gestion des variables actives quantitatives"),
-                       radioButtons("missing_quant_method", "Méthode :",
-                                    choices = c("Supprimer les lignes" = "remove_rows",
-                                                "Supprimer les colonnes" = "remove_cols",
-                                                "Remplir par la moyenne" = "fill_mean",
-                                                "Remplir par la médiane" = "fill_median",
-                                                "Aucune modification" = "none"),
-                                    selected = "none"),
-               
-                       h4("Gestion des variables actives catégorielles"),
-                       radioButtons("missing_cat_method", "Méthode :",
-                                    choices = c("Supprimer les lignes" = "remove_rows",
-                                                "Supprimer les colonnes" = "remove_cols",
-                                                "Remplir par le mode (modalité la plus fréquente)" = "fill_mode",
-                                                "Aucune modification" = "none"),
-                                    selected = "none"),
-                       
-                       h4("Gestion de la variable cible"),
-                       radioButtons("missing_target_method", "Méthode :",
-                                    choices = c("Supprimer les lignes" = "remove_rows",
-                                                "Remplir par le mode (modalité la plus fréquente)" = "fill_mode",
-                                                "Aucune modification" = "none"),
-                                    selected = "none"),
-                       
-                       actionButton("handle_missing", "Appliquer les modifications")
-                ),
-                
-                #Colonne de droite - Apercu des données après traitement
-                column(width = 8,
-                       h3("Aperçu après traitement"),
-                       DTOutput('cleaned_table')
-                )
-        )
-      ),
-      
-      # Onglet Modèlisation
-      tabItem(tabName = "modeling",
-              fluidRow(
-                column(
-                  width=4,
-                  # Configuration des paramètres
-                  h3("Paramètres du Modèle"),
-                  numericInput("learning_rate", "Taux d'apprentissage", value = 0.01, min = 0.001, step = 0.001),
-                  numericInput("epochs", "Nombre d'époques", value = 1000, min = 100, step = 100),
-                  numericInput("regularization", "Régularisation", value = 0.01, min = 0, step = 0.01),
-                  # Bouton entrainement
-                  actionButton("train", "Entraîner le Modèle"),
-                  p("Attention à ne pas laisser de valeurs manquantes, sinon l'entraînement ne se débloquera pas.")
-                ),
-                column(
-                  width=8,
-                  # Affichage résumé
-                  h2("Résumé du Modèle"),
-                  verbatimTextOutput("model_summary")
-                )
-              )
-      ),
-      
-      # Onglet Résultats
-      tabItem(
-        tabName = "results",
-        tabsetPanel(
-          tabPanel(
-            #Tableau coefficients
-            title = "Coefficients",
-            fluidRow(
-              column(
-                width=12,
-                h3("Tableau des coefficients"),
-                DTOutput('coefficients_table')
-              )
-            ),
-            fluidRow(
-              column(
-                width=12,
-                #Visualisation graphique des coefficients
-                h2("Visualisation des coefficients"),
-                plotOutput('coefficients_plot')
-              )
-            )
-          ),
-          tabPanel(
-              title = "Probabilités Prédictives",
-              fluidRow(
-                column(
-                  width=12,
-                  #Visuaisation des probas par classe
-                  h3("Visualisation des probabilités prédicitives"),
-                  plotOutput('proba_distribution')
-                )
-              )
-            ),
-          tabPanel(
-            title = "Évolution de la Perte",
-            fluidRow(
-              column(
-                width = 12,
-                #Visualisation graphique de la perte
-                h3("Graphique de la perte par époque"),
-                plotOutput('loss_plot')
-              )
-            )
-          ),
-          tabPanel(
-            title = "Metriques",
-            fluidRow(
-              column(
-                width = 12,
-                # Visualisation des metriques 
-                h3("Métriques du modèle"),
-                verbatimTextOutput('metrics')
-              )
-            )
-          )
-        )
-      )     
+      mod_home_ui("home"),
+      mod_data_ui("data"),
+      mod_modeling_ui("modeling"),
+      mod_results_ui("results")
     )
   )
 )
-
 
 
 #Paramètre pour augmenter la limite de chargement à 30Mo
