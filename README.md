@@ -14,7 +14,6 @@
 - **Visualization Tools:** Plot feature importance and loss curves.
 - **Evaluation Metrics:** Compute precision, recall, F1-score, and accuracy on test datasets.
 
----
 
 ## Installation
 
@@ -47,7 +46,26 @@ If needed, you can install the required dependencies separately:
 install.packages(c("FactoMineR", "foreach", "doParallel", "parallel", "pROC", "caret"))
 ```
 
----
+## Datasets
+
+### Credit Score Classification Dataset
+
+This dataset focuses on credit card clients' default payments, containing demographic and credit data from Taiwan. It includes 25 variables such as client ID, credit limit, gender, age, repayment status, and bill amounts. The primary goal is to analyze factors influencing default payments. 
+
+For more details, you can access the dataset documentation on Kaggle: [Multi-Class Classification Problem]("https://www.kaggle.com/datasets/sudhanshu2198/processed-data-credit-score")
+
+### Predict Students' Dropout and Academic Success Dataset
+
+This dataset was created from a higher education institution to analyze factors influencing student dropout rates and academic success. It includes 36 features related to students' demographics, socio-economic status, and academic performance collected at enrollment and after the first two semesters. The primary goal is to build classification models that predict whether students will drop out, remain enrolled, or graduate. 
+
+For more details, you can access the dataset documentation here: [Predict Students' Dropout and Academic Success Dataset.]("https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success")
+
+### Global Terrorism Database (GTD)
+
+The Global Terrorism Database (GTD) is an extensive open-source dataset containing information on over 180,000 terrorist attacks worldwide from 1970 to 2017. Maintained by researchers at the National Consortium for the Study of Terrorism and Responses to Terrorism (START) at the University of Maryland, this dataset offers:
+
+For access to the dataset and more information, visit: [Global Terrorism Database on Kaggle]("https://www.kaggle.com/datasets/START-UMD/gtd?resource=download")
+
 
 ## Usage
 
@@ -89,7 +107,6 @@ results <- model$evaluate(X_test, y_test)
 print(results, row.names = TRUE)
 ```
 
----
 
 ## Key Functions
 
@@ -126,7 +143,7 @@ print(results, row.names = TRUE)
 ### 9. `to_pmml(file_path)`
 - Exports the trained model to a PMML file for deployment.
 
---- 
+
 
 ## Contributing
 
@@ -138,17 +155,16 @@ We welcome contributions to the `mnlmixte` package! Please follow these steps:
     4. Push to the branch: `git push origin feature-name`.
     5. Submit a pull request.
 
----
+
 
 ## License
 
 This package is licensed under the **GPL-3 License**. See the LICENSE file for details.
 
----
 
 ## Support
 
 For any issues, please feel free to open an issue on the GitHub repository or contact the authors:
 
 - [Lansana CISSE](https://github.com/lansanacisse)
-- [Pierre Bourdon](https://github.com/pbrbn)
+- [Pierre Bourbon](https://github.com/pbrbn)
