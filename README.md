@@ -79,7 +79,7 @@ library(caret)    # For data partitioning
 library(mnlmixte) # mnlmixte package
 
 # Load the dataset
-score = read.csv("Score.csv", header = TRUE, sep = ",")
+data(score) 
 
 # Split the data into X (features) and y (target)
 X <- score[, !(colnames(score) %in% "Credit_Score")]  
