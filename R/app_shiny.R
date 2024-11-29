@@ -319,7 +319,11 @@ server <- function(input, output, session) {
   
   observeEvent(input$handle_missing, {
     req(data())
-    df <- data()  # Copie des données initiales
+    df <- data()
+    selected_vars <- c(input$target, input$active_vars)
+    
+    # Filtre les colonnes de df pour ne garder que celles sélectionnées
+    df <- df[, selected_vars, drop = FALSE]
     
     # Gestion des valeurs manquantes pour les variables quantitatives
     quantitative_cols <- sapply(df, is.numeric)  # Identifier les colonnes quantitatives
