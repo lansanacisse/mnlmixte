@@ -226,6 +226,10 @@ ui <- dashboardPage(
 )
 
 
+
+#Paramètre pour augmenter la limite de chargement à 30Mo
+options(shiny.maxRequestSize = 30*1024^2)
+
 # Serveur
 server <- function(input, output, session) {
   # Activer shinyjs pour gérer l'état des boutons
