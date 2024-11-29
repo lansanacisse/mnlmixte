@@ -88,9 +88,7 @@ ui <- dashboardPage(
                        h3("2 - Choix des variables"),
                        uiOutput('target'),
                        uiOutput('active_vars'),
-                       # Résumé des données
-                       h3("Résumé des données"),
-                       verbatimTextOutput('summary')
+                       
                 ),
                 
                 # Colonne de droite : Affichage du tableau de données
@@ -100,7 +98,13 @@ ui <- dashboardPage(
                 )
               ),
               
-              # Structure en colonnes
+              fluidRow(
+                # Résumé des données
+                column(width=12,
+                       h3("Résumé des données"),
+                       verbatimTextOutput('summary'))
+              ),
+              
               fluidRow(
                 # Colonne de gauche : Gestion des valeurs manquantes - Variables quantitatives et qualitatives
                 column(width=4,
