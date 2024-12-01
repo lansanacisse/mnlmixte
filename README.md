@@ -32,7 +32,7 @@ To install the package directly from GitHub, run the following commands:
 
 ``` r
 # Install devtools if you don't have it
-install.packages("devtools")
+install.packages(c("devtools", "usethis"))
 
 # Install mnlmixte from GitHub
 devtools::install_github("lansanacisse/mnlmixte")
