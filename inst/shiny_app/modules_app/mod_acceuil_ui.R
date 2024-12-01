@@ -13,10 +13,6 @@ mod_home_ui <- function(id) {
                tags$li("Visualiser les résultats et interpréter les coefficients.")
              ),
              p("Utilisez le menu à gauche pour naviguer entre les différentes étapes."),
-             h4("Ressources utiles"),
-             tags$ul(
-               tags$li(a("Documentation de l'application", href = "https://example.com", target = "_blank"))
-             )
       ),
       column(width = 6,
              h3("Flux de l'application : "),
