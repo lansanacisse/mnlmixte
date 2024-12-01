@@ -1,5 +1,4 @@
-# mnlmixte - multinomial logistic regression  for mixed
-  
+# mnlmixte - multinomial logistic regression for mixed
 
 ## Overview
 
@@ -7,31 +6,31 @@
 
 ### Features
 
-- **Multinomial Logistic Regression:** Perform classification tasks on datasets with mixed variable types.
-- **Variable Selection:** Automatically identify important features using statistical tests.
-- **Parallel Processing:** Leverage multiple cores for efficient training on large datasets.
-- **Model Export:** Export trained models in PMML format for sharing and deployment.
-- **Visualization Tools:** Plot feature importance and loss curves.
-- **Evaluation Metrics:** Compute precision, recall, F1-score, and accuracy on test datasets.
-
+-   **Multinomial Logistic Regression:** Perform classification tasks on datasets with mixed variable types.
+-   **Variable Selection:** Automatically identify important features using statistical tests.
+-   **Parallel Processing:** Leverage multiple cores for efficient training on large datasets.
+-   **Model Export:** Export trained models in PMML format for sharing and deployment.
+-   **Visualization Tools:** Plot feature importance and loss curves.
+-   **Evaluation Metrics:** Compute precision, recall, F1-score, and accuracy on test datasets.
 
 ## Installation
 
 ### Prerequisites
-Make sure you have R (>= 4.0.0) installed. The package relies on the following dependencies:
 
-- `FactoMineR`
-- `foreach`
-- `doParallel`
-- `parallel`
-- `pROC`
-- `caret`
+Make sure you have R (\>= 4.0.0) installed. The package relies on the following dependencies:
+
+-   `FactoMineR`
+-   `foreach`
+-   `doParallel`
+-   `parallel`
+-   `pROC`
+-   `caret`
 
 ### Installing from GitHub
 
 To install the package directly from GitHub, run the following commands:
 
-```R
+``` r
 # Install devtools if you don't have it
 install.packages("devtools")
 
@@ -40,9 +39,10 @@ devtools::install_github("lansanacisse/mnlmixte")
 ```
 
 ### Installing Dependencies Manually
+
 If needed, you can install the required dependencies separately:
 
-```R
+``` r
 install.packages(c("FactoMineR", "foreach", "doParallel", "parallel", "pROC", "caret"))
 ```
 
@@ -50,22 +50,15 @@ install.packages(c("FactoMineR", "foreach", "doParallel", "parallel", "pROC", "c
 
 ### Credit Score Classification Dataset
 
-This dataset focuses on credit card clients' default payments, containing demographic and credit data from Taiwan. It includes 25 variables such as client ID, credit limit, gender, age, repayment status, and bill amounts. The primary goal is to analyze factors influencing default payments. 
+This dataset focuses on credit card clients' default payments, containing demographic and credit data from Taiwan. It includes 25 variables such as client ID, credit limit, gender, age, repayment status, and bill amounts. The primary goal is to analyze factors influencing default payments.
 
 For more details, you can access the dataset documentation on Kaggle: [Multi-Class Classification Problem](https://www.kaggle.com/datasets/sudhanshu2198/processed-data-credit-score)
 
 ### Predict Students' Dropout and Academic Success Dataset
 
-This dataset was created from a higher education institution to analyze factors influencing student dropout rates and academic success. It includes 36 features related to students' demographics, socio-economic status, and academic performance collected at enrollment and after the first two semesters. The primary goal is to build classification models that predict whether students will drop out, remain enrolled, or graduate. 
+This dataset was created from a higher education institution to analyze factors influencing student dropout rates and academic success. It includes 36 features related to students' demographics, socio-economic status, and academic performance collected at enrollment and after the first two semesters. The primary goal is to build classification models that predict whether students will drop out, remain enrolled, or graduate.
 
 For more details, you can access the dataset documentation here: [Predict Students' Dropout and Academic Success Dataset.](https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success)
-
-### Global Terrorism Database (GTD)
-
-The Global Terrorism Database (GTD) is an extensive open-source dataset containing information on over 180,000 terrorist attacks worldwide from 1970 to 2017. Maintained by researchers at the National Consortium for the Study of Terrorism and Responses to Terrorism (START) at the University of Maryland, this dataset offers:
-
-For access to the dataset and more information, visit: [Global Terrorism Database on Kaggle](https://www.kaggle.com/datasets/START-UMD/gtd?resource=download)
-
 
 ## Usage
 
@@ -73,25 +66,25 @@ For access to the dataset and more information, visit: [Global Terrorism Databas
 
 Here is a simple example of how to use the `mnlmixte` package:
 
-```R
-library(readr)    # For reading CSV files
+``` r
 library(caret)    # For data partitioning
 library(mnlmixte) # mnlmixte package
 
-# Load the dataset
-data(score) 
+# Load the students dataset
+data(students)
 
-# Split the data into X (features) and y (target)
-X <- score[, !(colnames(score) %in% "Credit_Score")]  
-y <- as.factor(score$Credit_Score)
+# Prepare the data
+set.seed(123) # For reproducibility
+students$Target <- as.factor(students$Target)
+X <- students[, !(colnames(students) %in% "Target")]
+y <- students$Target
 
-# Divide the data into training and testing
-set.seed(123)  # For reproducibility
-train_indices <- createDataPartition(y, p = 0.7, list = FALSE)
-X_train <- X[train_indices, ]
-y_train <- y[train_indices]
-X_test <- X[-train_indices, ]
-y_test <- y[-train_indices]
+# Split into training and testing sets
+train_idx <- sample(1:nrow(students), size = 0.7 * nrow(students))
+X_train <- X[train_idx, ]
+y_train <- y[train_idx]
+X_test <- X[-train_idx, ]
+y_test <- y[-train_idx]
 
 # create a MNLMIXTE object
 model <- MNLMIXTE$new(learning_rate = 0.01, epochs = 5000, regularization = 0.01)
@@ -107,64 +100,69 @@ results <- model$evaluate(X_test, y_test)
 print(results, row.names = TRUE)
 ```
 
-
 ## Key Functions
 
 ### 1. `MNLMIXTE$new(...)`
-- Initializes the model with specified hyperparameters.
-- Parameters include:
-  - `learning_rate`: Learning rate for gradient descent.
-  - `epochs`: Number of training epochs.
-  - `regularization`: Regularization strength.
-  - `use_parallel`: Enable/disable parallel computation.
+
+-   Initializes the model with specified hyperparameters.
+-   Parameters include:
+    -   `learning_rate`: Learning rate for gradient descent.
+    -   `epochs`: Number of training epochs.
+    -   `regularization`: Regularization strength.
+    -   `use_parallel`: Enable/disable parallel computation.
 
 ### 2. `fit(X, y, ...)`
-- Trains the model using the provided training data (`X` and `y`).
-- Supports variable selection and parallel computation.
+
+-   Trains the model using the provided training data (`X` and `y`).
+-   Supports variable selection and parallel computation.
 
 ### 3. `predict(X)`
-- Predicts class labels for a new dataset (`X`).
+
+-   Predicts class labels for a new dataset (`X`).
 
 ### 4. `predict_proba(X)`
-- Returns the probabilities for each class.
+
+-   Returns the probabilities for each class.
 
 ### 5. `plot_loss()`
-- Plots the loss curve over training epochs.
+
+-   Plots the loss curve over training epochs.
 
 ### 6. `plot_importance()`
-- Visualizes the importance of features.
+
+-   Visualizes the importance of features.
 
 ### 7. `summary()`
-- Summarizes the trained model, including learning rate, epochs, and feature importance.
+
+-   Summarizes the trained model, including learning rate, epochs, and feature importance.
 
 ### 8. `evaluate(X, y)`
-- Computes precision, recall, F1-score, and accuracy on a test dataset.
+
+-   Computes precision, recall, F1-score, and accuracy on a test dataset.
 
 ### 9. `to_pmml(file_path)`
-- Exports the trained model to a PMML file for deployment.
 
-
+-   Exports the trained model to a PMML file for deployment.
 
 ## Contributing
 
 We welcome contributions to the `mnlmixte` package! Please follow these steps:
 
-    1. Fork the repository.
-    2. Create a feature branch: `git checkout -b feature-name`.
-    3. Commit your changes: `git commit -m "Add new feature"`.
-    4. Push to the branch: `git push origin feature-name`.
-    5. Submit a pull request.
-
-
+```         
+1. Fork the repository.
+2. Create a feature branch: `git checkout -b feature-name`.
+3. Commit your changes: `git commit -m "Add new feature"`.
+4. Push to the branch: `git push origin feature-name`.
+5. Submit a pull request.
+```
 
 ## License
 
 This package is licensed under the **GPL-3 License**. See the LICENSE file for details.
 
-
 ## Support
 
 For any issues, please feel free to open an issue on the GitHub repository or contact the authors:
 
-- [Lansana CISSE](https://github.com/lansanacisse)
-- [Pierre Bourbon](https://github.com/pbrbn)
+-   [Lansana CISSE](https://github.com/lansanacisse)
+-   [Pierre Bourbon](https://github.com/pbrbn)
