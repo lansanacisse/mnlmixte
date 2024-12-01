@@ -4,9 +4,8 @@ library(shinyjs)
 library(DT)
 library(readxl)
 library(ggplot2)
-
-#Source classe mnlmixte
-source("../../R/mnlmixte.R")
+library(dplyr)
+library(mnlmixte)
 
 #Source modules UI
 source("modules_app/mod_sidebar_ui.R")
