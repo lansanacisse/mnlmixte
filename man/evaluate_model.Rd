@@ -14,10 +14,10 @@ evaluate_model(self, X, y)
 \item{y}{A vector of true labels (factor).}
 }
 \value{
-A data frame of evaluation metrics for each class and overall averages.
+A data frame of evaluation metrics for each class and overall averages, including AUC.
 }
 \description{
-Evaluates the model on the given test data, computing metrics like precision, recall, F1-score, and accuracy.
+Evaluates the model on the given test data, computing metrics like precision, recall, F1-score, accuracy, and AUC, and generates an AUC plot.
 }
 \examples{
 \dontrun{

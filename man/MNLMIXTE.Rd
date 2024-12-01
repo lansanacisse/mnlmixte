@@ -105,23 +105,26 @@ Initialize the multinomial logistic regression model with specified parameters.
 }
 \subsection{Returns}{
 An initialized \code{MNLMIXTE} object.
-Check and Install Missing Dependencies
-Preprocess Data
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-MNLMIXTE-dependencies"></a>}}
 \if{latex}{\out{\hypertarget{method-MNLMIXTE-dependencies}{}}}
 \subsection{Method \code{dependencies()}}{
+Check and install missing dependencies for the package.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MNLMIXTE$dependencies()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+None. Installs missing libraries if necessary.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-MNLMIXTE-preprocess_data"></a>}}
 \if{latex}{\out{\hypertarget{method-MNLMIXTE-preprocess_data}{}}}
 \subsection{Method \code{preprocess_data()}}{
+Preprocess data before training or prediction.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MNLMIXTE$preprocess_data(X)}\if{html}{\out{</div>}}
 }
@@ -135,13 +138,13 @@ Preprocess Data
 }
 \subsection{Returns}{
 A preprocessed matrix.
-Prepare Data for Prediction
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-MNLMIXTE-prepare_for_prediction"></a>}}
 \if{latex}{\out{\hypertarget{method-MNLMIXTE-prepare_for_prediction}{}}}
 \subsection{Method \code{prepare_for_prediction()}}{
+Prepare data for prediction by ensuring alignment with trained model features.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MNLMIXTE$prepare_for_prediction(X)}\if{html}{\out{</div>}}
 }
@@ -155,25 +158,26 @@ Prepare Data for Prediction
 }
 \subsection{Returns}{
 A matrix prepared for prediction.
-Compute Variable Importance
-Softmax Function
-
-Applies the softmax function to a matrix of scores.
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-MNLMIXTE-var_importance"></a>}}
 \if{latex}{\out{\hypertarget{method-MNLMIXTE-var_importance}{}}}
 \subsection{Method \code{var_importance()}}{
+Compute the importance of each feature based on model coefficients.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MNLMIXTE$var_importance()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+A named numeric vector of feature importances.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-MNLMIXTE-softmax"></a>}}
 \if{latex}{\out{\hypertarget{method-MNLMIXTE-softmax}{}}}
 \subsection{Method \code{softmax()}}{
+Apply the softmax function to a matrix of scores.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MNLMIXTE$softmax(z)}\if{html}{\out{</div>}}
 }
@@ -187,13 +191,13 @@ Applies the softmax function to a matrix of scores.
 }
 \subsection{Returns}{
 A matrix of probabilities after applying the softmax transformation.
-Export Model to PMML
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-MNLMIXTE-to_pmml"></a>}}
 \if{latex}{\out{\hypertarget{method-MNLMIXTE-to_pmml}{}}}
 \subsection{Method \code{to_pmml()}}{
+Export the trained model to PMML format.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MNLMIXTE$to_pmml(file_path = "model.pmml")}\if{html}{\out{</div>}}
 }
@@ -206,98 +210,176 @@ Export Model to PMML
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-None. Saves the PMML model.
-Train the multinomial logistic regression model
-Predict class labels
-Predict class probabilities
-Perform variable selection
-Evaluate model performance
-Plot training loss
-Plot variable importance
-Print a summary of the model
-Display detailed model summary
+None. Saves the PMML model to the specified location.
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-MNLMIXTE-fit"></a>}}
 \if{latex}{\out{\hypertarget{method-MNLMIXTE-fit}{}}}
 \subsection{Method \code{fit()}}{
+Train the multinomial logistic regression model.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MNLMIXTE$fit(X, y, variable_selection = FALSE, use_parallel = FALSE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{X}}{A matrix or data frame of features.}
+
+\item{\code{y}}{A factor vector of target labels.}
+
+\item{\code{variable_selection}}{Logical. Whether to perform variable selection. Default: FALSE.}
+
+\item{\code{use_parallel}}{Logical. Whether to enable parallel computation. Default: FALSE.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+None. Updates the model's coefficients and loss history.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-MNLMIXTE-predict"></a>}}
 \if{latex}{\out{\hypertarget{method-MNLMIXTE-predict}{}}}
 \subsection{Method \code{predict()}}{
+Predict class labels based on the trained model.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MNLMIXTE$predict(X)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{X}}{A matrix or data frame of features.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A factor vector of predicted class labels.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-MNLMIXTE-predict_proba"></a>}}
 \if{latex}{\out{\hypertarget{method-MNLMIXTE-predict_proba}{}}}
 \subsection{Method \code{predict_proba()}}{
+Predict class probabilities for the input data.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MNLMIXTE$predict_proba(X)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{X}}{A matrix or data frame of features.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A matrix of predicted probabilities for each class.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-MNLMIXTE-var_select"></a>}}
 \if{latex}{\out{\hypertarget{method-MNLMIXTE-var_select}{}}}
 \subsection{Method \code{var_select()}}{
+Perform variable selection based on a Chi-squared test.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MNLMIXTE$var_select(X, y, threshold = 0.05, nbins = 5, B = 10000)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{X}}{A matrix or data frame of features.}
+
+\item{\code{y}}{A factor vector of target labels.}
+
+\item{\code{threshold}}{Numeric. P-value threshold for variable selection. Default: 0.05.}
+
+\item{\code{nbins}}{Integer. Number of bins for discretizing numeric variables. Default: 5.}
+
+\item{\code{B}}{Integer. Number of Monte Carlo simulations for the Chi-squared test. Default: 10000.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A vector of selected feature names.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-MNLMIXTE-evaluate"></a>}}
 \if{latex}{\out{\hypertarget{method-MNLMIXTE-evaluate}{}}}
 \subsection{Method \code{evaluate()}}{
+Evaluate model performance on test data.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MNLMIXTE$evaluate(X, y)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{X}}{A matrix or data frame of features.}
+
+\item{\code{y}}{A vector of true labels (factor).}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A data frame of evaluation metrics for each class and overall averages.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-MNLMIXTE-plot_loss"></a>}}
 \if{latex}{\out{\hypertarget{method-MNLMIXTE-plot_loss}{}}}
 \subsection{Method \code{plot_loss()}}{
+Plot the loss function progression during training.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MNLMIXTE$plot_loss()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+None. Displays a plot of the loss evolution.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-MNLMIXTE-plot_importance"></a>}}
 \if{latex}{\out{\hypertarget{method-MNLMIXTE-plot_importance}{}}}
 \subsection{Method \code{plot_importance()}}{
+Visualize feature importance based on model coefficients.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MNLMIXTE$plot_importance()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+None. Displays a bar plot of feature importance.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-MNLMIXTE-print"></a>}}
 \if{latex}{\out{\hypertarget{method-MNLMIXTE-print}{}}}
 \subsection{Method \code{print()}}{
+Print a summary of the model, including the number of classes and features.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MNLMIXTE$print()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+None. Prints to the console.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-MNLMIXTE-summary"></a>}}
 \if{latex}{\out{\hypertarget{method-MNLMIXTE-summary}{}}}
 \subsection{Method \code{summary()}}{
+Display a detailed summary of the trained model.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{MNLMIXTE$summary()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+None. Prints to the console.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-MNLMIXTE-clone"></a>}}
