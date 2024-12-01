@@ -10,7 +10,7 @@ mod_modeling_ui <- function(id) {
                    numericInput(ns("regularization"), "Régularisation", value = 0.01, min = 0, step = 0.01),
                    selectInput(ns("parallelism"), "Parallélisme calculs", choices = c("TRUE", "FALSE"), selected = "TRUE"),
                    actionButton(ns("train"), "Entraîner le Modèle", disabled = FALSE),
-                   p("Attention à ne pas laisser de valeurs manquantes, sinon l'entraînement ne se débloquera pas.")
+                   p("Attention à ne pas laisser de valeurs manquantes, sinon l'entraînement ne se fera pas.")
             ),
             column(width = 8,
                    h2("Résumé du Modèle"),
