@@ -30,7 +30,8 @@ Imports:
     DT,
     readxl,
     ggplot2,
-    dplyr
+    dplyr,
+    reshape2 
 Suggests:
     knitr,
     rmarkdown,
