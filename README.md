@@ -53,7 +53,7 @@ The package includes a Shiny app for interactive exploration of multinomial logi
 
 ```r
 library(mnlmixte)
-shiny::runApp(system.file("shiny_app", package = "mnlmixte"))
+runApp(system.file("shiny_app", package = "mnlmixte"), display.mode = "normal")
 ```
 
 This app provides an intuitive user interface to preprocess data, train models, and visualize results.
