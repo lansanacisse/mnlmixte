@@ -44,7 +44,7 @@ devtools::install_github("lansanacisse/mnlmixte")
 If needed, you can install the required dependencies separately:
 
 ```r
-install.packages(c("FactoMineR", "foreach", "doParallel", "parallel", "pROC", "caret", "ggplot2"))
+install.packages(c("FactoMineR", "foreach", "doParallel", "parallel", "pROC", "caret", "ggplot2","shiny", "shinydashboard", "shinyjs", "DT", "readxl", "ggplot2", "dplyr","reshape2 "))
 ```
 
 ## Shiny App Integration
@@ -53,7 +53,7 @@ The package includes a Shiny app for interactive exploration of multinomial logi
 
 ```r
 library(mnlmixte)
-shiny::runApp(system.file("shiny_app", package = "mnlmixte"))
+runApp(system.file("shiny_app", package = "mnlmixte"), display.mode = "normal")
 ```
 
 This app provides an intuitive user interface to preprocess data, train models, and visualize results.

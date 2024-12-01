@@ -5,6 +5,7 @@ library(DT)
 library(readxl)
 library(ggplot2)
 library(dplyr)
+library(reshape2)
 library(mnlmixte)
 
 #Source modules UI
