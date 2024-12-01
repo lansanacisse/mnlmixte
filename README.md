@@ -1,4 +1,4 @@
-# mnlmixte - multinomial logistic regression for mixed
+# mnlmixte - Multinomial Logistic Regression for Mixed Data
 
 ## Overview
 
@@ -7,11 +7,11 @@
 ### Features
 
 -   **Multinomial Logistic Regression:** Perform classification tasks on datasets with mixed variable types.
--   **Variable Selection:** Automatically identify important features using statistical tests.
+-   **Variable Selection:** Automatically identify important features using statistical tests (e.g., Chi-square).
 -   **Parallel Processing:** Leverage multiple cores for efficient training on large datasets.
 -   **Model Export:** Export trained models in PMML format for sharing and deployment.
--   **Visualization Tools:** Plot feature importance and loss curves.
--   **Evaluation Metrics:** Compute precision, recall, F1-score, and accuracy on test datasets.
+-   **Visualization Tools:** Plot feature importance, loss curves, and ROC-AUC curves.
+-   **Evaluation Metrics:** Compute precision, recall, F1-score, accuracy, and AUC on test datasets.
 
 ## Installation
 
@@ -25,14 +25,15 @@ Make sure you have R (\>= 4.0.0) installed. The package relies on the following 
 -   `parallel`
 -   `pROC`
 -   `caret`
+-   `ggplot2` (for visualization)
 
 ### Installing from GitHub
 
 To install the package directly from GitHub, run the following commands:
 
-``` r
+```r
 # Install devtools if you don't have it
-install.packages(c("devtools", "usethis"))
+install.packages("devtools")
 
 # Install mnlmixte from GitHub
 devtools::install_github("lansanacisse/mnlmixte")
@@ -42,31 +43,40 @@ devtools::install_github("lansanacisse/mnlmixte")
 
 If needed, you can install the required dependencies separately:
 
-``` r
-install.packages(c("FactoMineR", "foreach", "doParallel", "parallel", "pROC", "caret"))
+```r
+install.packages(c("FactoMineR", "foreach", "doParallel", "parallel", "pROC", "caret", "ggplot2"))
 ```
+
+## Shiny App Integration
+
+The package includes a Shiny app for interactive exploration of multinomial logistic regression results. To launch the app:
+
+```r
+library(mnlmixte)
+shiny::runApp(system.file("shiny_app", package = "mnlmixte"))
+```
+
+This app provides an intuitive user interface to preprocess data, train models, and visualize results.
 
 ## Datasets
 
-### Credit Score Classification Dataset
+### Included Dataset: Students
 
-This dataset focuses on credit card clients' default payments, containing demographic and credit data from Taiwan. It includes 25 variables such as client ID, credit limit, gender, age, repayment status, and bill amounts. The primary goal is to analyze factors influencing default payments.
+The `students` dataset included in the package is designed to analyze factors influencing student dropout rates and academic success. It includes 36 features related to students' demographics, socio-economic status, and academic performance. The goal is to predict whether students will drop out, remain enrolled, or graduate.
 
-For more details, you can access the dataset documentation on Kaggle: [Multi-Class Classification Problem](https://www.kaggle.com/datasets/sudhanshu2198/processed-data-credit-score)
+### Credit Score Classification Dataset (Optional)
 
-### Predict Students' Dropout and Academic Success Dataset
+The package can also be applied to the Credit Score Classification Dataset, which focuses on analyzing credit card clients' default payments. It includes 25 variables, such as demographic data, credit limit, repayment status, and bill amounts.
 
-This dataset was created from a higher education institution to analyze factors influencing student dropout rates and academic success. It includes 36 features related to students' demographics, socio-economic status, and academic performance collected at enrollment and after the first two semesters. The primary goal is to build classification models that predict whether students will drop out, remain enrolled, or graduate.
-
-For more details, you can access the dataset documentation here: [Predict Students' Dropout and Academic Success Dataset.](https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success)
+To access additional datasets, see:
+- [Credit Score Dataset on Kaggle](https://www.kaggle.com/datasets/sudhanshu2198/processed-data-credit-score)
+- [Students' Dropout and Academic Success Dataset](https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success)
 
 ## Usage
 
-### Example Workflow
+### Example Workflow with `students`
 
-Here is a simple example of how to use the `mnlmixte` package:
-
-``` r
+```r
 library(caret)    # For data partitioning
 library(mnlmixte) # mnlmixte package
 
@@ -86,75 +96,82 @@ y_train <- y[train_idx]
 X_test <- X[-train_idx, ]
 y_test <- y[-train_idx]
 
-# create a MNLMIXTE object
-model <- MNLMIXTE$new(learning_rate = 0.01, epochs = 5000, regularization = 0.01)
+# Create a MNLMIXTE object
+model <- MNLMIXTE$new(learning_rate = 0.01, epochs = 500, regularization = 0.01)
 
 # Train the model
-model$fit(X_train, y_train, variable_selection = TRUE, use_parallel=TRUE)
+model$fit(X_train, y_train, variable_selection = TRUE, use_parallel = FALSE)
 
 # Predict on the test data
 predictions <- model$predict(X_test)
 
 # Evaluate the model
 results <- model$evaluate(X_test, y_test)
-print(results, row.names = TRUE)
+print(results)
+
+# Plot results
+model$plot_loss()
+model$plot_importance()
 ```
 
 ## Key Functions
 
-### 1. `MNLMIXTE$new(...)`
+### Model Training and Prediction
 
--   Initializes the model with specified hyperparameters.
--   Parameters include:
-    -   `learning_rate`: Learning rate for gradient descent.
-    -   `epochs`: Number of training epochs.
-    -   `regularization`: Regularization strength.
-    -   `use_parallel`: Enable/disable parallel computation.
+1. **`MNLMIXTE$new(...)`**
+   - Initializes the model with hyperparameters.
+   - Parameters:
+     - `learning_rate`: Learning rate for gradient descent.
+     - `epochs`: Number of training iterations.
+     - `regularization`: Regularization strength to reduce overfitting.
+     - `loss_function`: Function for optimization (`logloss` or `hinge`).
+     - `use_parallel`: Enables parallel processing.
 
-### 2. `fit(X, y, ...)`
+2. **`fit(X, y, ...)`**
+   - Trains the model using the provided features and target variable.
 
--   Trains the model using the provided training data (`X` and `y`).
--   Supports variable selection and parallel computation.
+3. **`predict(X)`**
+   - Predicts class labels for a given dataset.
 
-### 3. `predict(X)`
+4. **`predict_proba(X)`**
+   - Predicts class probabilities for a given dataset.
 
--   Predicts class labels for a new dataset (`X`).
+### Model Evaluation and Visualization
 
-### 4. `predict_proba(X)`
+1. **`evaluate(X, y)`**
+   - Computes evaluation metrics: precision, recall, F1-score, accuracy, and AUC.
 
--   Returns the probabilities for each class.
+2. **`plot_loss()`**
+   - Plots the evolution of loss during training.
 
-### 5. `plot_loss()`
+3. **`plot_importance()`**
+   - Displays feature importance in a bar plot.
 
--   Plots the loss curve over training epochs.
+4. **`plot_auc()`**
+   - Visualizes the ROC curves and computes the AUC.
 
-### 6. `plot_importance()`
+### Additional Features
 
--   Visualizes the importance of features.
+1. **`var_select(X, y, ...)`**
+   - Performs variable selection using Chi-square tests.
 
-### 7. `summary()`
+2. **`to_pmml(file_path)`**
+   - Exports the trained model to a PMML file.
 
--   Summarizes the trained model, including learning rate, epochs, and feature importance.
+3. **`summary()`**
+   - Summarizes model details, including hyperparameters and variable importance.
 
-### 8. `evaluate(X, y)`
 
--   Computes precision, recall, F1-score, and accuracy on a test dataset.
-
-### 9. `to_pmml(file_path)`
-
--   Exports the trained model to a PMML file for deployment.
 
 ## Contributing
 
 We welcome contributions to the `mnlmixte` package! Please follow these steps:
 
-```         
 1. Fork the repository.
 2. Create a feature branch: `git checkout -b feature-name`.
 3. Commit your changes: `git commit -m "Add new feature"`.
 4. Push to the branch: `git push origin feature-name`.
 5. Submit a pull request.
-```
 
 ## License
 
