@@ -23,7 +23,7 @@ mod_data_server <- function(id) {
       }
     })
     
-    # Rendre dynamiquement les éléments selectInput et selectizeInput
+    # Rendre dynamique les éléments selectInput et selectizeInput
     observe({
       req(data())
       columns_names <- names(data())
