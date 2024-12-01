@@ -15,8 +15,10 @@ mod_modeling_server <- function(id, data_info) {
         #Séparation variables actives / variable cible
         X <- data_info()$cleaned_data[, existing_vars]
         y <- data_info()$cleaned_data[[data_info()$target]]
-        values$model <- MNLMIXTE$new(learning_rate = input$learning_rate, epochs = input$epochs, regularization = input$regularization)
-        values$model$fit(X, y)
+        values$model <- MNLMIXTE$new(learning_rate = input$learning_rate, 
+                                     epochs = input$epochs, 
+                                     regularization = input$regularization)
+        values$model$fit(X, y, use_parallel = input$parallelism)
       })
     })
     

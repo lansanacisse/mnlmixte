@@ -4,7 +4,6 @@ library(shinyjs)
 library(DT)
 library(readxl)
 library(ggplot2)
-library(dplyr)
 
 #Source classe mnlmixte
 source("../../R/mnlmixte.R")

@@ -129,21 +129,6 @@ mod_data_server <- function(id) {
       datatable(cleaned_data(), options = list(scrollX = TRUE))  # Afficher la table nettoyée
     })
     
-    # Observe l'événement de clic sur le bouton "Appliquer les modifications"
-    observe({
-      # Récupérer les données nettoyées
-      data <- cleaned_data()
-      
-      # Vérifier s'il reste des valeurs manquantes
-      if (!is.null(data) && any(is.na(data))) {
-        # Désactiver le bouton "train" s'il reste des NA
-        shinyjs::disable("train")
-      } else {
-        # Activer le bouton "train" s'il n'y a plus de NA
-        shinyjs::enable("train")
-      }
-    })
-    
     return(reactive({
       list(
         cleaned_data = cleaned_data(),
