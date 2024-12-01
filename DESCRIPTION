@@ -4,7 +4,7 @@ Version: 0.0.1
 Authors@R: 
     c(
         person(given = "Lansana", family = "CISSE", email = "l.cisse@univ-lyon2.fr", role = c("aut", "cre")),
-        person(given = "Pierre", family = "Bourdon", email = "p.bourdon@univ-lyon2.fr", role = "aut")
+        person(given = "Pierre", family = "Bourbon", email = "p.bourbon@univ-lyon2.fr", role = "aut")
     )
 Description: A package for multinomial logistic regression tailored for mixed datasets 
     (categorical and numerical variables). It supports variable selection, parallel processing 
@@ -17,6 +17,7 @@ RoxygenNote: 7.3.2
 Depends: 
     R (>= 4.0.0)
 Imports:
+    R6,
     FactoMineR,
     foreach,
     doParallel,
@@ -30,3 +31,5 @@ Suggests:
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
 LazyData: true
+Config/testthat/edition: 3
+

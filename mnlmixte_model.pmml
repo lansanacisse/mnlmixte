@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PMML version="4.4" xmlns="http://www.dmg.org/PMML-4_4">
+  <Header>
+    <Application name="MNLMIXTE" version="1.0"/>
+    <Timestamp>2024-12-01 03:20:09.451481</Timestamp>
+  </Header>
+  <DataDictionary>
+    <DataField name="Intercept" optype="continuous" dataType="double"/>
+    <DataField name="`Marital status`" optype="continuous" dataType="double"/>
+    <DataField name="`Application mode`" optype="continuous" dataType="double"/>
+    <DataField name="`Application order`" optype="continuous" dataType="double"/>
+    <DataField name="Course" optype="continuous" dataType="double"/>
+    <DataField name="`Daytime/evening attendance\t`" optype="continuous" dataType="double"/>
+    <DataField name="`Previous qualification`" optype="continuous" dataType="double"/>
+    <DataField name="`Previous qualification (grade)`" optype="continuous" dataType="double"/>
+    <DataField name="Nacionality" optype="continuous" dataType="double"/>
+    <DataField name="`Mother's qualification`" optype="continuous" dataType="double"/>
+    <DataField name="`Father's qualification`" optype="continuous" dataType="double"/>
+    <DataField name="`Mother's occupation`" optype="continuous" dataType="double"/>
+    <DataField name="`Father's occupation`" optype="continuous" dataType="double"/>
+    <DataField name="`Admission grade`" optype="continuous" dataType="double"/>
+    <DataField name="Displaced" optype="continuous" dataType="double"/>
+    <DataField name="`Educational special needs`" optype="continuous" dataType="double"/>
+    <DataField name="Debtor" optype="continuous" dataType="double"/>
+    <DataField name="`Tuition fees up to date`" optype="continuous" dataType="double"/>
+    <DataField name="Gender" optype="continuous" dataType="double"/>
+    <DataField name="`Scholarship holder`" optype="continuous" dataType="double"/>
+    <DataField name="`Age at enrollment`" optype="continuous" dataType="double"/>
+    <DataField name="International" optype="continuous" dataType="double"/>
+    <DataField name="`Curricular units 1st sem (credited)`" optype="continuous" dataType="double"/>
+    <DataField name="`Curricular units 1st sem (enrolled)`" optype="continuous" dataType="double"/>
+    <DataField name="`Curricular units 1st sem (evaluations)`" optype="continuous" dataType="double"/>
+    <DataField name="`Curricular units 1st sem (approved)`" optype="continuous" dataType="double"/>
+    <DataField name="`Curricular units 1st sem (grade)`" optype="continuous" dataType="double"/>
+    <DataField name="`Curricular units 1st sem (without evaluations)`" optype="continuous" dataType="double"/>
+    <DataField name="`Curricular units 2nd sem (credited)`" optype="continuous" dataType="double"/>
+    <DataField name="`Curricular units 2nd sem (enrolled)`" optype="continuous" dataType="double"/>
+    <DataField name="`Curricular units 2nd sem (evaluations)`" optype="continuous" dataType="double"/>
+    <DataField name="`Curricular units 2nd sem (approved)`" optype="continuous" dataType="double"/>
+    <DataField name="`Curricular units 2nd sem (grade)`" optype="continuous" dataType="double"/>
+    <DataField name="`Curricular units 2nd sem (without evaluations)`" optype="continuous" dataType="double"/>
+    <DataField name="`Unemployment rate`" optype="continuous" dataType="double"/>
+    <DataField name="`Inflation rate`" optype="continuous" dataType="double"/>
+    <DataField name="GDP" optype="continuous" dataType="double"/>
+    <DataField name="target" optype="categorical" dataType="string"/>
+  </DataDictionary>
+  <RegressionModel modelName="MNLMIXTE" functionName="classification">
+    <RegressionTable targetCategory="Dropout">
+      <NumericPredictor name="Intercept" coefficient="-0.0146126243130771"/>
+      <NumericPredictor name="`Marital status`" coefficient="0.00564829686675418"/>
+      <NumericPredictor name="`Application mode`" coefficient="0.0706215716915516"/>
+      <NumericPredictor name="`Application order`" coefficient="-0.0100919736605345"/>
+      <NumericPredictor name="Course" coefficient="0.0530975070535375"/>
+      <NumericPredictor name="`Daytime/evening attendance\t`" coefficient="-0.0223399249477569"/>
+      <NumericPredictor name="`Previous qualification`" coefficient="-0.00249654698808339"/>
+      <NumericPredictor name="`Previous qualification (grade)`" coefficient="-0.0148372275567151"/>
+      <NumericPredictor name="Nacionality" coefficient="-0.0133663346190498"/>
+      <NumericPredictor name="`Mother's qualification`" coefficient="0.0238582133894038"/>
+      <NumericPredictor name="`Father's qualification`" coefficient="0.00804338935975438"/>
+      <NumericPredictor name="`Mother's occupation`" coefficient="-0.0229729520753224"/>
+      <NumericPredictor name="`Father's occupation`" coefficient="-0.00719698340036949"/>
+      <NumericPredictor name="`Admission grade`" coefficient="-0.0559009521613832"/>
+      <NumericPredictor name="Displaced" coefficient="-0.0234067788456682"/>
+      <NumericPredictor name="`Educational special needs`" coefficient="-0.0130449920780221"/>
+      <NumericPredictor name="Debtor" coefficient="0.0876172242556727"/>
+      <NumericPredictor name="`Tuition fees up to date`" coefficient="-0.194633693420105"/>
+      <NumericPredictor name="Gender" coefficient="0.0497319282990708"/>
+      <NumericPredictor name="`Scholarship holder`" coefficient="-0.0940525976962598"/>
+      <NumericPredictor name="`Age at enrollment`" coefficient="0.0823338080724605"/>
+      <NumericPredictor name="International" coefficient="-0.0118734062142171"/>
+      <NumericPredictor name="`Curricular units 1st sem (credited)`" coefficient="0.0328904186026115"/>
+      <NumericPredictor name="`Curricular units 1st sem (enrolled)`" coefficient="0.027824197277416"/>
+      <NumericPredictor name="`Curricular units 1st sem (evaluations)`" coefficient="0.0274766872826217"/>
+      <NumericPredictor name="`Curricular units 1st sem (approved)`" coefficient="-0.165511711798658"/>
+      <NumericPredictor name="`Curricular units 1st sem (grade)`" coefficient="-0.151702758317049"/>
+      <NumericPredictor name="`Curricular units 1st sem (without evaluations)`" coefficient="0.0197545805876601"/>
+      <NumericPredictor name="`Curricular units 2nd sem (credited)`" coefficient="0.0374688731356699"/>
+      <NumericPredictor name="`Curricular units 2nd sem (enrolled)`" coefficient="0.00895238750768613"/>
+      <NumericPredictor name="`Curricular units 2nd sem (evaluations)`" coefficient="-0.00372197179774852"/>
+      <NumericPredictor name="`Curricular units 2nd sem (approved)`" coefficient="-0.241976522125201"/>
+      <NumericPredictor name="`Curricular units 2nd sem (grade)`" coefficient="-0.206226490472464"/>
+      <NumericPredictor name="`Curricular units 2nd sem (without evaluations)`" coefficient="0.027722999104069"/>
+      <NumericPredictor name="`Unemployment rate`" coefficient="0.00698892305382437"/>
+      <NumericPredictor name="`Inflation rate`" coefficient="0.022580851986659"/>
+      <NumericPredictor name="GDP" coefficient="-0.00920908649058762"/>
+    </RegressionTable>
+    <RegressionTable targetCategory="Enrolled">
+      <NumericPredictor name="Intercept" coefficient="-0.0146126243130771"/>
+      <NumericPredictor name="`Marital status`" coefficient="0.00564829686675418"/>
+      <NumericPredictor name="`Application mode`" coefficient="0.0706215716915516"/>
+      <NumericPredictor name="`Application order`" coefficient="-0.0100919736605345"/>
+      <NumericPredictor name="Course" coefficient="0.0530975070535375"/>
+      <NumericPredictor name="`Daytime/evening attendance\t`" coefficient="-0.0223399249477569"/>
+      <NumericPredictor name="`Previous qualification`" coefficient="-0.00249654698808339"/>
+      <NumericPredictor name="`Previous qualification (grade)`" coefficient="-0.0148372275567151"/>
+      <NumericPredictor name="Nacionality" coefficient="-0.0133663346190498"/>
+      <NumericPredictor name="`Mother's qualification`" coefficient="0.0238582133894038"/>
+      <NumericPredictor name="`Father's qualification`" coefficient="0.00804338935975438"/>
+      <NumericPredictor name="`Mother's occupation`" coefficient="-0.0229729520753224"/>
+      <NumericPredictor name="`Father's occupation`" coefficient="-0.00719698340036949"/>
+      <NumericPredictor name="`Admission grade`" coefficient="-0.0559009521613832"/>
+      <NumericPredictor name="Displaced" coefficient="-0.0234067788456682"/>
+      <NumericPredictor name="`Educational special needs`" coefficient="-0.0130449920780221"/>
+      <NumericPredictor name="Debtor" coefficient="0.0876172242556727"/>
+      <NumericPredictor name="`Tuition fees up to date`" coefficient="-0.194633693420105"/>
+      <NumericPredictor name="Gender" coefficient="0.0497319282990708"/>
+      <NumericPredictor name="`Scholarship holder`" coefficient="-0.0940525976962598"/>
+      <NumericPredictor name="`Age at enrollment`" coefficient="0.0823338080724605"/>
+      <NumericPredictor name="International" coefficient="-0.0118734062142171"/>
+      <NumericPredictor name="`Curricular units 1st sem (credited)`" coefficient="0.0328904186026115"/>
+      <NumericPredictor name="`Curricular units 1st sem (enrolled)`" coefficient="0.027824197277416"/>
+      <NumericPredictor name="`Curricular units 1st sem (evaluations)`" coefficient="0.0274766872826217"/>
+      <NumericPredictor name="`Curricular units 1st sem (approved)`" coefficient="-0.165511711798658"/>
+      <NumericPredictor name="`Curricular units 1st sem (grade)`" coefficient="-0.151702758317049"/>
+      <NumericPredictor name="`Curricular units 1st sem (without evaluations)`" coefficient="0.0197545805876601"/>
+      <NumericPredictor name="`Curricular units 2nd sem (credited)`" coefficient="0.0374688731356699"/>
+      <NumericPredictor name="`Curricular units 2nd sem (enrolled)`" coefficient="0.00895238750768613"/>
+      <NumericPredictor name="`Curricular units 2nd sem (evaluations)`" coefficient="-0.00372197179774852"/>
+      <NumericPredictor name="`Curricular units 2nd sem (approved)`" coefficient="-0.241976522125201"/>
+      <NumericPredictor name="`Curricular units 2nd sem (grade)`" coefficient="-0.206226490472464"/>
+      <NumericPredictor name="`Curricular units 2nd sem (without evaluations)`" coefficient="0.027722999104069"/>
+      <NumericPredictor name="`Unemployment rate`" coefficient="0.00698892305382437"/>
+      <NumericPredictor name="`Inflation rate`" coefficient="0.022580851986659"/>
+      <NumericPredictor name="GDP" coefficient="-0.00920908649058762"/>
+    </RegressionTable>
+    <RegressionTable targetCategory="Graduate">
+      <NumericPredictor name="Intercept" coefficient="-0.0146126243130771"/>
+      <NumericPredictor name="`Marital status`" coefficient="0.00564829686675418"/>
+      <NumericPredictor name="`Application mode`" coefficient="0.0706215716915516"/>
+      <NumericPredictor name="`Application order`" coefficient="-0.0100919736605345"/>
+      <NumericPredictor name="Course" coefficient="0.0530975070535375"/>
+      <NumericPredictor name="`Daytime/evening attendance\t`" coefficient="-0.0223399249477569"/>
+      <NumericPredictor name="`Previous qualification`" coefficient="-0.00249654698808339"/>
+      <NumericPredictor name="`Previous qualification (grade)`" coefficient="-0.0148372275567151"/>
+      <NumericPredictor name="Nacionality" coefficient="-0.0133663346190498"/>
+      <NumericPredictor name="`Mother's qualification`" coefficient="0.0238582133894038"/>
+      <NumericPredictor name="`Father's qualification`" coefficient="0.00804338935975438"/>
+      <NumericPredictor name="`Mother's occupation`" coefficient="-0.0229729520753224"/>
+      <NumericPredictor name="`Father's occupation`" coefficient="-0.00719698340036949"/>
+      <NumericPredictor name="`Admission grade`" coefficient="-0.0559009521613832"/>
+      <NumericPredictor name="Displaced" coefficient="-0.0234067788456682"/>
+      <NumericPredictor name="`Educational special needs`" coefficient="-0.0130449920780221"/>
+      <NumericPredictor name="Debtor" coefficient="0.0876172242556727"/>
+      <NumericPredictor name="`Tuition fees up to date`" coefficient="-0.194633693420105"/>
+      <NumericPredictor name="Gender" coefficient="0.0497319282990708"/>
+      <NumericPredictor name="`Scholarship holder`" coefficient="-0.0940525976962598"/>
+      <NumericPredictor name="`Age at enrollment`" coefficient="0.0823338080724605"/>
+      <NumericPredictor name="International" coefficient="-0.0118734062142171"/>
+      <NumericPredictor name="`Curricular units 1st sem (credited)`" coefficient="0.0328904186026115"/>
+      <NumericPredictor name="`Curricular units 1st sem (enrolled)`" coefficient="0.027824197277416"/>
+      <NumericPredictor name="`Curricular units 1st sem (evaluations)`" coefficient="0.0274766872826217"/>
+      <NumericPredictor name="`Curricular units 1st sem (approved)`" coefficient="-0.165511711798658"/>
+      <NumericPredictor name="`Curricular units 1st sem (grade)`" coefficient="-0.151702758317049"/>
+      <NumericPredictor name="`Curricular units 1st sem (without evaluations)`" coefficient="0.0197545805876601"/>
+      <NumericPredictor name="`Curricular units 2nd sem (credited)`" coefficient="0.0374688731356699"/>
+      <NumericPredictor name="`Curricular units 2nd sem (enrolled)`" coefficient="0.00895238750768613"/>
+      <NumericPredictor name="`Curricular units 2nd sem (evaluations)`" coefficient="-0.00372197179774852"/>
+      <NumericPredictor name="`Curricular units 2nd sem (approved)`" coefficient="-0.241976522125201"/>
+      <NumericPredictor name="`Curricular units 2nd sem (grade)`" coefficient="-0.206226490472464"/>
+      <NumericPredictor name="`Curricular units 2nd sem (without evaluations)`" coefficient="0.027722999104069"/>
+      <NumericPredictor name="`Unemployment rate`" coefficient="0.00698892305382437"/>
+      <NumericPredictor name="`Inflation rate`" coefficient="0.022580851986659"/>
+      <NumericPredictor name="GDP" coefficient="-0.00920908649058762"/>
+    </RegressionTable>
+  </RegressionModel>
+</PMML>
+
