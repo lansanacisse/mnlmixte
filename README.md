@@ -44,7 +44,7 @@ devtools::install_github("lansanacisse/mnlmixte")
 If needed, you can install the required dependencies separately:
 
 ```r
-install.packages(c("FactoMineR", "foreach", "doParallel", "parallel", "pROC", "caret", "ggplot2"))
+install.packages(c("FactoMineR", "foreach", "doParallel", "parallel", "pROC", "caret", "ggplot2","shiny", "shinydashboard", "shinyjs", "DT", "readxl", "ggplot2", "dplyr"))
 ```
 
 ## Shiny App Integration
